@@ -1,6 +1,6 @@
 const today = new Date();
 
-const STORAGE_KEY = "grindset-state-v1";
+const STORAGE_KEY = "grindset-state";
 
 function loadState() {
   try {
