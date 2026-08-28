@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="theme-color" content="#071827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HustLr">
+
+  <title>HustLr — Monthly Goal Tracker</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-shell">
+
+    <header class="topbar container">
+      <a class="brand" href="#">
+        <span class="brand-mark">H</span>
+        <span>HustLr</span>
+      </a>
+
+      <span class="top-status">
+        <i></i>
+        Personal performance system
+      </span>
+    </header>
+
+
+    <main class="container">
+
+      <nav class="tabs" aria-label="Views">
+
+        <button
+          class="tab active"
+          data-view="tracker"
+        >
+          Tracker
+        </button>
+
+        <button
+          class="tab"
+          data-view="summary"
+        >
+          Summary
+        </button>
+
+      </nav>
+
+
+      <!-- TRACKER -->
+
+      <section id="trackerView" class="view">
+
+        <div class="hero">
+
+          <div>
+
+            <p class="eyebrow">
+              Monthly performance /
+              <span id="heroMonth">
+                August 2026
+              </span>
+            </p>
+
+            <h1>
+              Make the month
+              <br>
+              <em>count.</em>
+            </h1>
+
+            <p class="motivation">
+
+              <span id="motivationText"></span>
+
+              <button
+                id="refreshMotivation"
+                class="icon-button"
+                title="Refresh motivation"
+                aria-label="Refresh motivation"
+              >
+                ↻
+              </button>
+
+            </p>
+
+          </div>
+
+
+          <div class="hero-score">
+
+            <span>
+              OVERALL COMPLETION
+            </span>
+
+            <strong id="overallPercent">
+              0%
+            </strong>
+
+            <div class="score-track">
+              <i id="overallBar"></i>
+            </div>
+
+            <small id="tierLabel">
+              BRUTAL TIER
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <div class="period">
+
+            <label for="monthSelect">
+              PERIOD
+            </label>
+
+            <select id="monthSelect"></select>
+
+            <select id="yearSelect"></select>
+
+          </div>
+
+
+          <div class="toolbar-actions">
+
+            <span id="todayStat">
+              Today
+            </span>
+
+            <button
+              id="exportButton"
+              class="ghost-button"
+            >
+              ↓ Export JSON
+            </button>
+
+            <label
+              for="importFile"
+              class="ghost-button"
+              style="cursor:pointer;"
+            >
+              ↑ Import JSON
+            </label>
+
+            <input
+              id="importFile"
+              type="file"
+              accept=".json,application/json"
+              hidden
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="stats-row">
+
+          <div>
+            <span>CHECKS LOGGED</span>
+            <b id="checksStat">0</b>
+          </div>
+
+          <div>
+            <span>ACTIVE GOALS</span>
+            <b id="goalsStat">0</b>
+          </div>
+
+          <div>
+            <span>DAYS IN PERIOD</span>
+            <b id="daysStat">31</b>
+          </div>
+
+          <div>
+            <span>MONTH STATUS</span>
+            <b id="statusStat">
+              Not started
+            </b>
+          </div>
+
+        </div>
+
+
+        <section class="tracker-card">
+
+          <div class="card-heading">
+
+            <div>
+
+              <p class="eyebrow">
+                Daily inputs
+              </p>
+
+              <h2>
+                Your commitments
+              </h2>
+
+            </div>
+
+            <span class="scroll-hint">
+              Scroll to explore days →
+            </span>
+
+          </div>
+
+
+          <div class="grid-scroll">
+
+            <div
+              id="trackerGrid"
+              class="tracker-grid"
+            ></div>
+
+          </div>
+
+
+          <form
+            id="goalForm"
+            class="add-goal"
+          >
+
+            <input
+              id="goalInput"
+              type="text"
+              maxlength="48"
+              placeholder="Add a goal worth showing up for..."
+              required
+            >
+
+            <button
+              type="submit"
+              class="green-button"
+            >
+              + Add Goal
+            </button>
+
+          </form>
+
+        </section>
+
+      </section>
+
+
+      <!-- SUMMARY -->
+
+      <section
+        id="summaryView"
+        class="view hidden"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              The scoreboard /
+              <span id="summaryMonth">
+                August 2026
+              </span>
+            </p>
+
+            <h1>
+              See the work.
+              <br>
+              <em>Own the result.</em>
+            </h1>
+
+          </div>
+
+
+          <button
+            id="summaryExport"
+            class="ghost-button"
+          >
+            ↓ Export JSON
+          </button>
+
+        </div>
+
+
+        <div class="overview-cards">
+
+          <article>
+
+            <span>
+              OVERALL COMPLETION
+            </span>
+
+            <strong id="summaryOverall">
+              0%
+            </strong>
+
+            <p id="summaryTier">
+              Brutal tier
+            </p>
+
+          </article>
+
+
+          <article>
+
+            <span>
+              STRONGEST GOAL
+            </span>
+
+            <strong
+              class="card-goal"
+              id="strongestGoal"
+            >
+              —
+            </strong>
+
+            <p id="strongestPercent">
+              No check-ins yet
+            </p>
+
+          </article>
+
+
+          <article>
+
+            <span>
+              WEAKEST GOAL
+            </span>
+
+            <strong
+              class="card-goal"
+              id="weakestGoal"
+            >
+              —
+            </strong>
+
+            <p id="weakestPercent">
+              No check-ins yet
+            </p>
+
+          </article>
+
+        </div>
+
+
+        <div class="summary-columns">
+
+          <section class="ranking-panel">
+
+            <div class="section-heading">
+
+              <h2>
+                Goal ranking
+              </h2>
+
+              <span id="rankingMeta">
+                0 goals
+              </span>
+
+            </div>
+
+            <div id="rankingList"></div>
+
+          </section>
+
+
+          <section class="trend-panel">
+
+            <div class="section-heading">
+
+              <h2>
+                Daily trend
+              </h2>
+
+              <span>
+                Checks / day
+              </span>
+
+            </div>
+
+            <div
+              id="trendChart"
+              class="trend-chart"
+              role="img"
+              aria-label="Daily goal completion trend"
+            ></div>
+
+            <div class="chart-axis">
+
+              <span>1</span>
+
+              <span id="chartMiddle">
+                15
+              </span>
+
+              <span id="chartEnd">
+                31
+              </span>
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <script src="script.js"></script>
+
+  <script>
+
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener(
+        "load",
+        () => {
+
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .then(() => {
+              console.log(
+                "HustLr Service Worker aktif."
+              );
+            })
+            .catch((error) => {
+              console.error(
+                "Service Worker hatası:",
+                error
+              );
+            });
+
+        }
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
